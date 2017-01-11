@@ -40,14 +40,14 @@ public class ResourceBundleTest {
     @Test
     public void 標準のASCIIコードのpropertiesを参照する() {
         CustomControl control = CustomControl.builder().build();
-        ResourceBundle bundle = ResourceBundle.getBundle("message", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.message", control);
         assertThat(bundle.getString("test"), is("ascii(default)"));
     }
 
     @Test
     public void 文字コードにUTF8_ロケールの指定をしない_デフォルトロケール() {
         CustomControl control = CustomControl.builder().charCode(StandardCharsets.UTF_8.toString()).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(JP)"));
     }
 
@@ -55,7 +55,7 @@ public class ResourceBundleTest {
     public void 文字コードにUTF8_ロケールが存在しない_デフォルトリソース() {
         CustomControl control = CustomControl.builder()
                 .charCode(StandardCharsets.UTF_8.toString()).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", Locale.CHINESE, control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", Locale.CHINESE, control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(default)"));
     }
 
@@ -63,7 +63,7 @@ public class ResourceBundleTest {
     public void xmlのリソースを参照() {
         //XML no need charCode set (set ignore)
         CustomControl control = CustomControl.builder().build();
-        ResourceBundle bundle = ResourceBundle.getBundle("SJIS", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.SJIS", control);
         assertThat(bundle.getString("sjis.xml"), is("XML読み込み(SJIS)"));
     }
 
@@ -74,14 +74,14 @@ public class ResourceBundleTest {
     @Test
     public void xmlとpropertiesに同名のbaseNameの資産が存在する_propertiesが参照される_文字コード未指定により文字化け() {
         CustomControl control = CustomControl.builder().build();
-        ResourceBundle bundle = ResourceBundle.getBundle("SJIS-SAME", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.SJIS-SAME", control);
         assertThat(bundle.getString("test"), is("properties:¯¼XML è1(SJIS)"));
     }
 
     @Test
     public void xmlとpropertiesに同名のbaseNameの資産が存在する_xml指定_文字コード文字化けしない() {
         CustomControl control = CustomControl.builder().formats(CustomControl.FORMAT_XML).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("SJIS-SAME2", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.SJIS-SAME2", control);
         assertThat(bundle.getString("sjis2.xml"), is("xml:同名propertiesあり2(SJIS)"));
     }
 
@@ -96,7 +96,7 @@ public class ResourceBundleTest {
                 .formats(CustomControl.FORMAT_DEFAULT)
                 .formats(CustomControl.FORMAT_XML)
                 .build();
-        ResourceBundle bundle = ResourceBundle.getBundle("SJIS-SAME3", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.SJIS-SAME3", control);
         assertThat(bundle.getString("test"), is("properties:同名XMLあり3(SJIS)"));
     }
 
@@ -116,7 +116,7 @@ public class ResourceBundleTest {
                         .build())
                 .build();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", Locale.JAPANESE, control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", Locale.JAPANESE, control);
         assertThat(bundle.getString("test"), is("UTF8english"));
     }
 
@@ -138,7 +138,7 @@ public class ResourceBundleTest {
                         .build())
                 .build();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", Locale.US, control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", Locale.US, control);
         assertThat(bundle.getString("test"), is("UTF8english"));
     }
 
@@ -158,7 +158,7 @@ public class ResourceBundleTest {
                         .build())
                 .build();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", Locale.CHINA, control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", Locale.CHINA, control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(default)"));
     }
 
@@ -178,7 +178,7 @@ public class ResourceBundleTest {
                         .build())
                 .build();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", Locale.JAPAN, control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", Locale.JAPAN, control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(JP)"));
     }
 
@@ -202,7 +202,7 @@ public class ResourceBundleTest {
                         .build())
                 .build();
 
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(JP)"));
     }
 
@@ -213,11 +213,11 @@ public class ResourceBundleTest {
     @Test
     public void データをキャッシュしない() {
         CustomControl control = CustomControl.builder().timeToLive(CustomControl.TTL_DONT_CACHE).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8NoCache", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8NoCache", control);
         assertThat(bundle.getString("test"), is("UTF8ã®ãã¹ã(NoCache)"));
 
         control = CustomControl.builder().charCode("UTF-8").timeToLive(CustomControl.TTL_DONT_CACHE).build();
-        bundle = ResourceBundle.getBundle("utf8NoCache", control);
+        bundle = ResourceBundle.getBundle("resourcebundle.test.utf8NoCache", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(NoCache)"));
     }
 
@@ -228,11 +228,11 @@ public class ResourceBundleTest {
     @Test
     public void データをキャッシュする() {
         CustomControl control = CustomControl.builder().charCode("UTF-8").timeToLive(CustomControl.TTL_NO_EXPIRATION_CONTROL).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8Cache1", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8Cache1", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(cache1)"));
 
         control = CustomControl.builder().charCode("SJIS").timeToLive(CustomControl.TTL_NO_EXPIRATION_CONTROL).build();
-        bundle = ResourceBundle.getBundle("utf8Cache1", control);
+        bundle = ResourceBundle.getBundle("resourcebundle.test.utf8Cache1", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(cache1)"));
     }
 
@@ -243,11 +243,11 @@ public class ResourceBundleTest {
     @Test
     public void データをキャッシュする_文字コード変更が適用されない() {
         CustomControl control = CustomControl.builder().timeToLive(CustomControl.TTL_NO_EXPIRATION_CONTROL).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8Cache2", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8Cache2", control);
         assertThat(bundle.getString("test"), is("UTF8ã®ãã¹ã(cache2)"));
 
         control = CustomControl.builder().charCode("UTF-8").timeToLive(CustomControl.TTL_NO_EXPIRATION_CONTROL).build();
-        bundle = ResourceBundle.getBundle("utf8Cache2", control);
+        bundle = ResourceBundle.getBundle("resourcebundle.test.utf8Cache2", control);
         assertThat(bundle.getString("test"), is("UTF8ã®ãã¹ã(cache2)"));
     }
 
@@ -258,7 +258,7 @@ public class ResourceBundleTest {
     @Test
     public void useUTF8SleeplessthanTimeLtInterval() {
         CustomControl control = CustomControl.builder().charCode("UTF-8").timeToLive(1000L).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8IntervalCache1", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8IntervalCache1", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(IntervalCache1)"));
 
         try {
@@ -269,14 +269,14 @@ public class ResourceBundleTest {
         }
 
         control = CustomControl.builder().charCode("SJIS").build();
-        bundle = ResourceBundle.getBundle("utf8IntervalCache1", control);
+        bundle = ResourceBundle.getBundle("resourcebundle.test.utf8IntervalCache1", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(IntervalCache1)"));
     }
 
     @Test(expected = MissingResourceException.class)
     public void リソースファイル名が存在しない() {
         CustomControl control = CustomControl.builder().build();
-        ResourceBundle bundle = ResourceBundle.getBundle("msg", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.msg", control);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -284,7 +284,7 @@ public class ResourceBundleTest {
         CustomControl control = CustomControl.builder()
                 .formats(Collections.unmodifiableList(Arrays.asList("not_exist")))
                 .build();
-        ResourceBundle bundle = ResourceBundle.getBundle("message", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.message", control);
     }
 
     /**
@@ -294,7 +294,7 @@ public class ResourceBundleTest {
     @Test
     public void useUTF8IntervalLtSleepTime() {
         CustomControl control = CustomControl.builder().charCode("UTF-8").timeToLive(1L).build();
-        ResourceBundle bundle = ResourceBundle.getBundle("utf8IntervalCache2", control);
+        ResourceBundle bundle = ResourceBundle.getBundle("resourcebundle.test.utf8IntervalCache2", control);
         assertThat(bundle.getString("test"), is("UTF8のテスト(IntervalCache2edit)"));
 
         try {
@@ -306,9 +306,8 @@ public class ResourceBundleTest {
         }
 
         control = CustomControl.builder().charCode("SJIS").build();
-        bundle = ResourceBundle.getBundle("utf8IntervalCache2", control);
+        bundle = ResourceBundle.getBundle("resourcebundle.test.utf8IntervalCache2", control);
         assertThat(bundle.getString("test"), is(not("UTF8のテスト(IntervalCache2edit)")));
         System.err.println("utf8IntervalCache2:" + bundle.getString("test"));
     }
-
 }
